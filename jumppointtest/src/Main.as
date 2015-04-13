@@ -65,7 +65,6 @@ package
 			
 			setWalkable = !pf.nodes[tilex][tiley].isWalkable;
 			
-			pf.Reset();
 			pf.nodes[tilex][tiley].isWalkable = setWalkable;
 			path = pf.FindPath(startx, starty, endx, endy);
 			Redraw();
@@ -85,7 +84,6 @@ package
 				
 				if (pf.nodes[tilex][tiley].isWalkable != setWalkable)
 				{
-					pf.Reset();
 					pf.nodes[tilex][tiley].isWalkable = setWalkable;
 					path = pf.FindPath(startx, starty, endx, endy);
 					Redraw();

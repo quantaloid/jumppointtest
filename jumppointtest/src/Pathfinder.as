@@ -27,20 +27,10 @@ package
 			}
 		}
 		
-		public function Reset():void
-		{
-			for (var ix:int = 0; ix < numTilesX; ++ix)
-			{
-				for (var iy:int = 0; iy < numTilesY; ++iy)
-				{
-					nodes[ix][iy].Reset();
-				}
-			}
-		}
-		
 		public function FindPath(startx:int, starty:int, endx:int, endy:int):Vector.<Node>
 		{
 			var openList:Vector.<Node> = new Vector.<Node>();
+			var closedList:Vector.<Node> = new Vector.<Node>();
 			
 			var startNode:Node = nodes[startx][starty];
 			var endNode:Node = nodes[endx][endy];
@@ -52,6 +42,7 @@ package
 			// push the start node into the open list
 			openList.push(startNode);
 			startNode.opened = true;
+			var node:Node;
 			
 			graphics.clear();
 			
@@ -61,21 +52,38 @@ package
 				// pop the position of node which has the minimum `f` value.
 				var smallestf:Function = CompareF;
 				openList.sort(smallestf);
-				var node:Node = openList.pop();
+				node = openList.pop();
 				node.closed = true;
+				closedList.push(node);
 				
-				if (node === endNode)
+				if (node == endNode) // found a path
 				{
-					//trace("found a path");
-					return BackTrace(endNode);
+					//return BackTrace(endNode);
+					break;
 				}
 				
 				IdentifySuccessors(node, endNode, openList);
 			}
 			
-			// fail to find the path
-			//trace("failed to find a path");
-			return null;
+			var path:Vector.<Node>;
+			if (node == endNode) // found a path
+			{
+				path = BackTrace(endNode);
+			}
+			
+			// reset open list
+			for (var i:int = 0; i < openList.length; i++)
+			{
+				openList[i].Reset();
+			}
+			
+			// reset closed list
+			for (i = 0; i < closedList.length; i++)
+			{
+				closedList[i].Reset();
+			}
+			
+			return path;
 		}
 		
 		private function CompareF(node1:Node, node2:Node):int
@@ -108,7 +116,7 @@ package
 				node = node.parentNode;
 				path.push(node);
 			}
-			trace("total distance: " + totalDist.toString());
+			//trace("total distance: " + totalDist.toString());
 			return path.reverse();
 		}
 		
@@ -157,8 +165,8 @@ package
 							graphics.lineStyle(1.0, 0x33FFFF, 0.2);
 							graphics.drawCircle(jumpNode.x * 20+10, jumpNode.y * 20+10, 4.0);
 							graphics.lineStyle(0, 0, 0);
-							trace("node added to open list (" + jumpx.toString() + ", " + jumpy.toString() + ")");
-							trace("f = " + jumpNode.f.toString() + ", g = " + jumpNode.g.toString() + ", h = " + jumpNode.h);
+							//trace("node added to open list (" + jumpx.toString() + ", " + jumpy.toString() + ")");
+							//trace("f = " + jumpNode.f.toString() + ", g = " + jumpNode.g.toString() + ", h = " + jumpNode.h);
 							jumpNode.opened = true;
 						}
 					}
@@ -185,7 +193,7 @@ package
 				var dy:Number = (y - py) / Math.max(Math.abs(y - py), 1);
 				
 				// search diagonally
-				if (dx !== 0 && dy !== 0) // test if either value or type are not equal to 0
+				if (dx != 0 && dy != 0)
 				{
 					if (IsWalkableAt(x, y + dy))
 					{
@@ -220,7 +228,7 @@ package
 				// search horizontally/vertically
 				else
 				{
-					if (dx === 0) // test if both value and type are equal
+					if (dx == 0)
 					{
 						if (IsWalkableAt(x, y + dy))
 						{
