@@ -45,7 +45,7 @@ package
 			}*/
 			
 			pf = new Pathfinder();
-			addChild(pf);
+			addChild(pf.s);
 			
 			path = pf.FindPath(startx, starty, endx, endy);
 			
@@ -111,12 +111,13 @@ package
 			if (path != null && path.length > 0)
 			{
 				graphics.lineStyle(2.0, 0xFFFFFF, 1.0);
-				graphics.moveTo(startx * tileSize + tileSize * 0.5, starty * tileSize + tileSize * 0.5);
-				for (var i:int = 0; i < path.length; ++i)
+				//graphics.moveTo(startx * tileSize + tileSize * 0.5, starty * tileSize + tileSize * 0.5);
+				graphics.moveTo(path[0].x * tileSize + tileSize * 0.5, path[0].y * tileSize + tileSize * 0.5);
+				for (var i:int = 1; i < path.length; ++i)
 				{
 					graphics.lineTo(path[i].x * tileSize + tileSize * 0.5, path[i].y * tileSize + tileSize * 0.5);
 				}
-				graphics.lineTo(endx * tileSize + tileSize * 0.5, endy * tileSize + tileSize * 0.5);
+				//graphics.lineTo(endx * tileSize + tileSize * 0.5, endy * tileSize + tileSize * 0.5);
 			}
 			
 			graphics.lineStyle(0, 0, 0);

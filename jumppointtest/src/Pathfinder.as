@@ -7,11 +7,12 @@ package
 	 * 
 	 * @author Anna Zajaczkowski
 	 */
-	public class Pathfinder extends Shape
+	public class Pathfinder
 	{
 		public var nodes:Vector.<Vector.<Node>>;
 		public var numTilesX:int = 25;
 		public var numTilesY:int = 25;
+		public var s:Shape = new Shape();
 		
 		public function Pathfinder() 
 		{
@@ -44,7 +45,7 @@ package
 			startNode.opened = true;
 			var node:Node;
 			
-			graphics.clear();
+			s.graphics.clear();
 			
 			// while the open list is not empty
 			while (openList.length > 0)
@@ -104,6 +105,7 @@ package
 		{
 			var totalDist:Number = 0;
 			var path:Vector.<Node> = new Vector.<Node>();
+			path.push(node);
 			while (node.parentNode)
 			{
 				var dx:Number = Math.abs(node.x - node.parentNode.x);
@@ -116,7 +118,7 @@ package
 				node = node.parentNode;
 				path.push(node);
 			}
-			//trace("total distance: " + totalDist.toString());
+			trace("total distance: " + totalDist.toString() + ", number of nodes: " + path.length.toString());
 			return path.reverse();
 		}
 		
@@ -162,9 +164,9 @@ package
 						if (!jumpNode.opened)
 						{
 							openList.push(jumpNode);
-							graphics.lineStyle(1.0, 0x33FFFF, 0.2);
-							graphics.drawCircle(jumpNode.x * 20+10, jumpNode.y * 20+10, 4.0);
-							graphics.lineStyle(0, 0, 0);
+							s.graphics.lineStyle(1.0, 0x33FFFF, 0.2);
+							s.graphics.drawCircle(jumpNode.x * 20+10, jumpNode.y * 20+10, 4.0);
+							s.graphics.lineStyle(0, 0, 0);
 							//trace("node added to open list (" + jumpx.toString() + ", " + jumpy.toString() + ")");
 							//trace("f = " + jumpNode.f.toString() + ", g = " + jumpNode.g.toString() + ", h = " + jumpNode.h);
 							jumpNode.opened = true;
@@ -371,9 +373,12 @@ package
 				nodes[x][y].tested = true;
 			}*/
 			
-			graphics.beginFill(0x33FFFF, 0.2);
-			graphics.drawCircle(x * 20 + 10, y * 20 + 10, 1);
-			graphics.endFill();
+			s.graphics.beginFill(0x33FFFF, 0.2);
+			s.graphics.drawCircle(x * 20 + 10, y * 20 + 10, 1);
+			s.graphics.endFill();
+			s.graphics.lineStyle(2.0, 0x33FFFF, 0.2);
+			s.graphics.moveTo(x * 20 + 10, y * 20 + 10);
+			s.graphics.lineTo(x * 20 + 10 + dx * 5, y * 20 + 10 + dy * 5);
 			
 			if (nodes[x][y] == endNode)
 			{
