@@ -5,7 +5,7 @@ package
 	import flash.events.MouseEvent;
 	
 	/**
-	 * ...
+	 * jump point test
 	 * @author Anna Zajaczkowski
 	 */
 	public class Main extends Sprite 

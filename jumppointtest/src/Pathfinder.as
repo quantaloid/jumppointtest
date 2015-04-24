@@ -2,7 +2,9 @@ package
 {
 	import flash.display.Shape;
 	/**
-	 * AS3 port of the jump point test pathfinding algorithm from Pathfinding.js
+	 * AS3 port of the jump point search pathfinding
+	 * algorithm from Pathfinding.js by Xueqiao Xu.
+	 * 
 	 * https://github.com/qiao/PathFinding.js
 	 * 
 	 * @author Anna Zajaczkowski
